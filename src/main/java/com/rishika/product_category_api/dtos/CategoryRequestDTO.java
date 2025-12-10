@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryRequestDTO {
-    @NotBlank
+    @NotBlank(message = "Category name cannot be blank")
     private String title;
 }

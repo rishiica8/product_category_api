@@ -7,6 +7,7 @@ import com.rishika.product_category_api.exception.ProductNotFoundException;
 import com.rishika.product_category_api.models.Category;
 import com.rishika.product_category_api.models.Product;
 import com.rishika.product_category_api.service.ProductServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public  ResponseEntity<ProductResponseDTO>getProductById(@PathVariable("id") Integer id) throws ProductNotFoundException {
+    public  ResponseEntity<ProductResponseDTO>getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         Product product=service.getProductById(id);
         return ResponseEntity.ok(convertProductToResponseDTO(product));
     }
@@ -36,7 +37,7 @@ public class ProductController {
         return ResponseEntity.ok(responseList);
     }
     @PostMapping("/products")
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO request) {
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO request) {
         Product savedProduct=service.createProduct(request);
         return ResponseEntity.ok(convertProductToResponseDTO(savedProduct));
     }
@@ -57,7 +58,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> deleteProductById(@PathVariable("id") Long id)throws ProductNotFoundException{
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

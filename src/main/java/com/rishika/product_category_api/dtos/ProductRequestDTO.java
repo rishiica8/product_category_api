@@ -1,9 +1,6 @@
 package com.rishika.product_category_api.dtos;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,18 +8,17 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class ProductRequestDTO {
-    @NotBlank
+    @NotBlank(message = "Product name cannot be blank")
     private String title;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.1", message = "Price must be greater than 0")
     private BigDecimal price;
 
-    @NotNull
-    @PositiveOrZero
+    @NotNull(message = "Quantity is required")
+    @Min(value = 0, message = "Quantity cannot be negative")
     private Integer quantity;
 
-
-    @NotNull
+    @NotNull(message = "Category is required")
     private CategoryRequestDTO category;
 }

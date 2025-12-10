@@ -3,6 +3,7 @@ package com.rishika.product_category_api.service;
 import com.rishika.product_category_api.dtos.CategoryResponseDTO;
 import com.rishika.product_category_api.dtos.ProductRequestDTO;
 import com.rishika.product_category_api.dtos.ProductResponseDTO;
+import com.rishika.product_category_api.exception.DuplicateNameException;
 import com.rishika.product_category_api.exception.ProductNotFoundException;
 import com.rishika.product_category_api.models.Category;
 import com.rishika.product_category_api.models.Product;
@@ -24,35 +25,38 @@ public class ProductServiceImpl implements  ProductService{
         this.categoryRepo= categoryRepo;
     }
     @Override
-    public Product getProductById(Integer id){
-        Optional<Product> response= productRepo.findById(id);
-        if(!response.isPresent()){
-            throw new IllegalArgumentException("Product not found");
+    public Product getProductById(Long id){
+        Optional<Product> product = productRepo.findById(id);
+
+        if (!product.isPresent()) {
+            throw new ProductNotFoundException("Product not found");
         }
-        return response.get();
+
+        return product.get();
     }
     @Override
     public List<Product> getAllProducts(){
         return productRepo.findAll();
     }
     public Product createProduct(ProductRequestDTO dto){
+        if (productRepo.findByTitle(dto.getTitle()).isPresent()) {
+            throw new DuplicateNameException("Product name must be unique");
+        }
+        Category category = categoryRepo.findByTitle(dto.getCategory().getTitle())
+                .orElseGet(() -> {
+                    // Only create category when product is being created
+                    Category newCategory = new Category();
+                    newCategory.setTitle(dto.getCategory().getTitle());
+                    newCategory.setCreatedAt(new Date());
+                    newCategory.setUpdatedAt(new Date());
+                    return categoryRepo.save(newCategory);
+                });
         Product product =new Product();
         product.setTitle(dto.getTitle());
         product.setPrice(dto.getPrice());
         product.setQuantity(dto.getQuantity());
         product.setCreatedAt(new Date());
         product.setUpdatedAt(new Date());
-
-        Optional<Category> existing = categoryRepo.findByTitle(dto.getCategory().getTitle());
-
-        Category category;
-        if (existing.isPresent()) {
-            category = existing.get();
-        } else {
-            category = new Category();
-            category.setTitle(dto.getCategory().getTitle());
-            categoryRepo.save(category);
-        }
 
         product.setCategory(category);
         Product response = productRepo.save(product);
@@ -65,9 +69,9 @@ public class ProductServiceImpl implements  ProductService{
         }
     }
     @Override
-    public void deleteProduct(Integer id) {
+    public void deleteProduct(Long id) {
         if(!productRepo.existsById(id)) {
-            throw new IllegalArgumentException("Product not found");
+            throw new ProductNotFoundException("Product not found");
         }
         productRepo.deleteById(id);
     }
