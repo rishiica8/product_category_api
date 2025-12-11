@@ -3,6 +3,7 @@ package com.rishika.product_category_api.service;
 import com.rishika.product_category_api.dtos.CategoryResponseDTO;
 import com.rishika.product_category_api.dtos.ProductRequestDTO;
 import com.rishika.product_category_api.dtos.ProductResponseDTO;
+import com.rishika.product_category_api.dtos.ProductUpdateDTO;
 import com.rishika.product_category_api.exception.DuplicateNameException;
 import com.rishika.product_category_api.exception.ProductNotFoundException;
 import com.rishika.product_category_api.models.Category;
@@ -62,12 +63,6 @@ public class ProductServiceImpl implements  ProductService{
         Product response = productRepo.save(product);
         return response;
     }
-    // we can do all the validations here
-    private void validateInputRequest(Product p) {
-        if (p.getTitle() == null || p.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null");
-        }
-    }
     @Override
     public void deleteProduct(Long id) {
         if(!productRepo.existsById(id)) {
@@ -94,5 +89,29 @@ public class ProductServiceImpl implements  ProductService{
         dto.setId(category.getId());
         dto.setTitle(category.getTitle());
         return dto;
+    }
+    @Override
+    public Product updateProduct(Long id, ProductUpdateDTO dto) {
+        Product existingProduct = productRepo.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        // check duplicate title
+        if (!existingProduct.getTitle().equals(dto.getTitle()) &&
+                productRepo.findByTitle(dto.getTitle()).isPresent()) {
+            throw new DuplicateNameException("Product title must be unique");
+        }
+
+        // fetch category using categoryId
+        Category category = categoryRepo.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with given ID"));
+
+        existingProduct.setTitle(dto.getTitle());
+        existingProduct.setPrice(dto.getPrice());
+        existingProduct.setQuantity(dto.getQuantity());
+        existingProduct.setCategory(category);
+        existingProduct.setUpdatedAt(new Date());
+
+        return productRepo.save(existingProduct);
+
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.List;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -70,21 +72,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    // 400 - Validation Errors (DTO @Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDTO> handleValidationErrors(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
 
-        String message = ex.getBindingResult()
+        List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .findFirst()
-                .orElse("Validation error");
+                .map(error -> error.getDefaultMessage())
+                .toList();
 
-        ErrorDTO error = new ErrorDTO(message, request.getRequestURI());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        // Pass both errors and path
+        ErrorDTO errorDTO = new ErrorDTO(errors, request.getRequestURI());
+
+        return ResponseEntity.badRequest().body(errorDTO);
     }
 }
 

@@ -8,12 +8,10 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ProductResponseDTO {
-    private Long id;
+public class ProductUpdateDTO {
     private String title;
     private BigDecimal price;
-    private Integer quantity;
-    private Date CreatedAt;
+    private int quantity;
     private Date UpdatedAt;
-    private CategoryResponseDTO category;
+    private Long categoryId;
 }

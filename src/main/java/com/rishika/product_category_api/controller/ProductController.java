@@ -3,6 +3,7 @@ package com.rishika.product_category_api.controller;
 import com.rishika.product_category_api.dtos.CategoryResponseDTO;
 import com.rishika.product_category_api.dtos.ProductRequestDTO;
 import com.rishika.product_category_api.dtos.ProductResponseDTO;
+import com.rishika.product_category_api.dtos.ProductUpdateDTO;
 import com.rishika.product_category_api.exception.ProductNotFoundException;
 import com.rishika.product_category_api.models.Category;
 import com.rishika.product_category_api.models.Product;
@@ -61,5 +62,14 @@ public class ProductController {
     public ResponseEntity<Void> deleteProductById(@PathVariable("id") Long id)throws ProductNotFoundException{
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(
+            @PathVariable Long id,
+            @RequestBody @Valid ProductUpdateDTO dto) {
+
+        Product updatedProduct = service.updateProduct(id, dto);
+        ProductResponseDTO response = service.convertProductToResponseDTO(updatedProduct);
+        return ResponseEntity.ok(response);
     }
 }

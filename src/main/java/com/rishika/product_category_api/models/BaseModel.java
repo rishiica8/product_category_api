@@ -18,5 +18,4 @@ public class BaseModel implements Serializable {
     private Long id;
     private Date CreatedAt;
     private Date UpdatedAt;
-    private Boolean isDeleted;
 }
