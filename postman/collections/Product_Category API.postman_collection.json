@@ -1,0 +1,242 @@
+{
+  "info": {
+    "_postman_id": "9222ab83-3b13-42fd-97f9-6cd4c99e9b59",
+    "name": "Product_Category API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Product",
+      "id": "9ff11b0f-300a-4f4d-ba5a-0a02e4f59ac1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Laptop\",\r\n  \"price\": 75000,\r\n  \"quantity\": 5,\r\n  \"category\": {\r\n    \"title\": \"Electronics\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/products",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FetchProductById",
+      "id": "96ec15f8-f80d-42ef-a900-b94a07e68a72",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/products/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ListOfProducts",
+      "id": "3a2a10db-68d7-4344-b727-23730ddd8231",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/products",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteProduct",
+      "id": "bf00fc6f-49dd-4155-b724-f2690622e4e9",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/products/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CreateCategory",
+      "id": "310897b5-4ac8-4ccc-9454-bf138d841e81",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Electronics\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/categories",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ListOFCategories",
+      "id": "de6d9b00-48ea-4e7c-9b4c-3fe903c83919",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Electronics\"\r\n}\r\n"
+        },
+        "url": {
+          "raw": "localhost:8080/categories",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteCategory",
+      "id": "a92502e7-4040-4852-a698-6f3c3fb5f276",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Electronics\"\r\n}\r\n"
+        },
+        "url": {
+          "raw": "localhost:8080/categories/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "categories",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UpdateProductById",
+      "id": "267ff14b-365a-4a97-ba1a-93367b52c4ff",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n     \"title\": \"laptop\",\r\n  \"price\":76000,\r\n  \"quantity\": 2,\r\n  \"categoryId\": 1\r\n  }\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/products/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FetchCategoryById",
+      "id": "fe6f513a-cd21-474d-9973-a389bcb0f3d1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Electronics\"\r\n}\r\n"
+        },
+        "url": {
+          "raw": "localhost:8080/categories/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "categories",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "id": "26530cfe-4ebc-429e-a31c-c4876a0e15ba",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}
