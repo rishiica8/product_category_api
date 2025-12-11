@@ -76,17 +76,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleValidationErrors(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
-
-        List<String> errors = ex.getBindingResult()
+        String errorMessage = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
+                .findFirst()
                 .map(error -> error.getDefaultMessage())
-                .toList();
+                .orElse("Invalid input");
 
-        // Pass both errors and path
-        ErrorDTO errorDTO = new ErrorDTO(errors, request.getRequestURI());
+        ErrorDTO errorDTO = new ErrorDTO(errorMessage, request.getRequestURI());
 
         return ResponseEntity.badRequest().body(errorDTO);
+
     }
 }
 

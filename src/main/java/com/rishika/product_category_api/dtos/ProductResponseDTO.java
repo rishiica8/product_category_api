@@ -13,7 +13,5 @@ public class ProductResponseDTO {
     private String title;
     private BigDecimal price;
     private Integer quantity;
-    private Date CreatedAt;
-    private Date UpdatedAt;
     private CategoryResponseDTO category;
 }
