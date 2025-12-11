@@ -29,14 +29,19 @@ public class ProductController {
         return ResponseEntity.ok(convertProductToResponseDTO(product));
     }
     @GetMapping("/products")
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        List<Product> products = service.getAllProducts();
-        List<ProductResponseDTO> responseList = products.stream()
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
+    ) {
+        List<Product> products = service.getAllProducts(categoryId, minPrice, maxPrice);
+        List<ProductResponseDTO> response = products.stream()
                 .map(this::convertProductToResponseDTO)
                 .toList();
 
-        return ResponseEntity.ok(responseList);
+        return ResponseEntity.ok(response);
     }
+
     @PostMapping("/products")
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO request) {
         Product savedProduct=service.createProduct(request);

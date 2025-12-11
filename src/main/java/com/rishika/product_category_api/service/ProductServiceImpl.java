@@ -36,8 +36,8 @@ public class ProductServiceImpl implements  ProductService{
         return product.get();
     }
     @Override
-    public List<Product> getAllProducts(){
-        return productRepo.findAll();
+    public List<Product> getAllProducts(Long categoryId, Double minPrice, Double maxPrice){
+        return productRepo.findProductsByFilters(categoryId, minPrice, maxPrice);
     }
     public Product createProduct(ProductRequestDTO dto){
         if (productRepo.findByTitle(dto.getTitle()).isPresent()) {
