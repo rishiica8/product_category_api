@@ -9,8 +9,10 @@ import com.rishika.product_category_api.models.Category;
 import com.rishika.product_category_api.models.Product;
 import com.rishika.product_category_api.service.ProductServiceImpl;
 import jakarta.validation.Valid;
+//import org.hibernate.query.Page;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public  ResponseEntity<ProductResponseDTO>getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
+       if(id==10000){
+           throw new IllegalArgumentException("id  should not be 10000");
+       }
         Product product=service.getProductById(id);
         return ResponseEntity.ok(convertProductToResponseDTO(product));
     }
@@ -76,5 +81,11 @@ public class ProductController {
         Product updatedProduct = service.updateProduct(id, dto);
         ProductResponseDTO response = service.convertProductToResponseDTO(updatedProduct);
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/products/{pageNo}/{pageSize}")
+    public ResponseEntity<Page<Product>> getPaginatedProducts(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
+        Page<Product> products= service.getPaginatedProducts(pageNo,pageSize);
+        return ResponseEntity.ok(products);
+
     }
 }

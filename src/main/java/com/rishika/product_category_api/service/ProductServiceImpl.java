@@ -8,8 +8,13 @@ import com.rishika.product_category_api.exception.DuplicateNameException;
 import com.rishika.product_category_api.exception.ProductNotFoundException;
 import com.rishika.product_category_api.models.Category;
 import com.rishika.product_category_api.models.Product;
+//import org.hibernate.query.Page;
 import com.rishika.product_category_api.repository.CategoryRepository;
 import com.rishika.product_category_api.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -114,4 +119,13 @@ public class ProductServiceImpl implements  ProductService{
         return productRepo.save(existingProduct);
 
     }
+    @Override
+    public Page<Product> getPaginatedProducts(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        String sortBy="title";// i can also take sortBy as part of my request
+        Pageable pageableWithSort=PageRequest.of(pageNo,pageSize, Sort.Direction.ASC,sortBy);
+        Page<Product> productPage=productRepo.findAll(pageableWithSort);
+        return productPage;
+    }
+
 }
